@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+.vs/
+cmake-build-debug/
+bin/
+build/
+out/
+CMakeSettings.json
+_deps/
+Makefile
+*.cmake
+CMakeCache.txt
+CMakeFiles/
+doom_like_engine
