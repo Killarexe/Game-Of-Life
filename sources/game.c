@@ -18,12 +18,23 @@ Game* init_game() {
   SetRandomSeed(time(NULL));
   fill_with_random_cells(game->map);
 
+  game->target_fps = 60;
+
   InitWindow(settings->window_width, settings->window_height, "Game of Life");
+  SetTargetFPS(60);
 
   return game;
 }
 
 void update_game(Game *game, float delta) {
+  if (IsKeyDown(KEY_UP)) {
+    game->target_fps++;
+    SetTargetFPS(game->target_fps);
+  }
+  if (IsKeyDown(KEY_DOWN)) {
+    game->target_fps--;
+    SetTargetFPS(game->target_fps);
+  }
   update_cells_map(game->map);
   delta = 0;
 }
