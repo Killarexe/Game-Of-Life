@@ -35,6 +35,22 @@ void fill_cells_map(CellsMap *map, char value) {
   }
 }
 
+
+int get_live_cells_neighbours(CellsMap* map, int x, int y) {
+  int live_cells = 0;
+  for (int x_offset = -1; x_offset < 2; x_offset++) {
+    int x_pos = x + x_offset;
+    for (int y_offset = -1; y_offset < 2; y_offset++) {
+      int y_pos = y + y_offset;
+      int cell_index = y_pos * map->width + x_pos;
+      if ((x_offset != y_offset || x_offset != 0) && map->cells[cell_index] == 1) {
+          live_cells++;
+      }
+    }
+  }
+  return live_cells;
+}
+
 void update_cells_map(CellsMap *map) {
   int map_size = map->width * map->height;
   char* new_cells = malloc(sizeof(char) * map_size);
@@ -42,19 +58,7 @@ void update_cells_map(CellsMap *map) {
     char value = map->cells[index];
     int x = index % map->width;
     int y = floor((double)index / map->width);
-    int live_cells = 0;
-    for (int x_offset = -1; x_offset < 2; x_offset++) {
-      int x_pos = x + x_offset;
-      for (int y_offset = -1; y_offset < 2; y_offset++) {
-        int y_pos = y + y_offset;
-        int cell_index = x_pos * y_pos;
-        if (cell_index < map_size && (x_pos != y_pos || x_offset != 0)) {
-          if (map->cells[cell_index] == 1) {
-            live_cells++;
-          }
-        }
-      }
-    }
+    int live_cells = get_live_cells_neighbours(map, x, y);
     if (value == 1 && (live_cells == 2 || live_cells == 3)) {
       new_cells[index] = 1;
     } else if (live_cells == 3) {
@@ -71,9 +75,9 @@ void draw_cells_map(CellsMap* map, GameSettings* settings) {
   int map_size = map->width * map->height;
   for (int i = 0; i < map_size; i++) {
     char value = map->cells[i];
-    int x = i % map->width;
-    int y = floor((double)i / map->width);
-    DrawRectangle(x * settings->pixel_scale, y * settings->pixel_scale, settings->pixel_scale, settings->pixel_scale, value == 1? WHITE : BLACK);
+    int x = i % map->width * settings->pixel_scale;
+    int y = floor((double)i / map->width) * settings->pixel_scale;
+    DrawRectangle(x, y, settings->pixel_scale, settings->pixel_scale, value == 1 ? WHITE : BLACK);
   }
 }
 
