@@ -11,4 +11,5 @@ Makefile
 *.cmake
 CMakeCache.txt
 CMakeFiles/
-doom_like_engine
+game_of_life
+game_of_life.exe
