@@ -1,42 +1,16 @@
-# Simple and portable CMake template for raylib
+# Game of Life
 
-This is a basic project template for raylib using CMake and has been tested with Visual Studio, Visual Studio Code and CLion.
+A simple game of life made with C and Raylib.
 
-The master branch of the raylib source code is downloaded using CMake FetchContent from github and compiled from source as it is much easier than including prebuilt binaries for every platform and configuration.
+## How to use/play?
 
-Building from the cmake file will build both raylib and `src/main.c` which includes a basic example of a raylib program.
+First you'll need to install `make` and `cmake` to compile this repo.
 
-## Asset handling
-
-The example in `src/main.c` uses an example image located in the `assets` folder.
-To load it we use `ASSETS_PATH`, which is a string macro with the *absolute* path "assets" directory.
-This macro is defined in the `CMakeLists.txt` file on line `23`.
- 
-If you plan on releasing or sharing your game consider manually setting the value of the `ASSETS_PATH` macro.
-
-In C you can concatenate string literals by putting them next to each other, 
-eg: `"A" "B"` is `"AB"`. So ASSETS_PATH `"test.png"` becomes `"/path/to/your/assets/test.png"`
-
-If you wanna share your game with others you should set ASSETS_PATH to be a *relative* path like "./assets/". You can do this in the CMakeLists.txt file. 
-
-## Using C++
-
-Using c++ is quite simple, just change these lines in the `CMakeLists.txt`
-from
+Clone this repo and execute this command on the cloned folder:
 ```
-project(my_raylib_game C)
-
-set(CMAKE_C_STANDARD 99)
-
-file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/sources/*.c")
+    cmake . && make
 ```
-to
-```
-project(my_raylib_game CXX)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+After this an executable is generated on the cloned folder you can now execute it.
 
-file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/sources/*.cpp")
-```
-After this just reload cmake and it should build fine.
+You can adjust the speed by using the Up and Down arrow keys.
