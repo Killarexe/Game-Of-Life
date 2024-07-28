@@ -43,8 +43,8 @@ void update_game(Game *game, float delta) {
 
 void render_game(Game *game) {
   draw_cells_map(game->map, game->settings);
-  char speed[9] = "Speed: ";
-  sprintf(speed, "%d", game->target_fps);
+  char speed[9];
+  sprintf(speed, "Speed: %d", game->target_fps);
   DrawText(speed, 10, 10, 24, GREEN);
 }
 
