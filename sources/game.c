@@ -2,6 +2,7 @@
 #include "cells_map.h"
 #include "game_settings.h"
 
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
@@ -35,12 +36,16 @@ void update_game(Game *game, float delta) {
     game->target_fps--;
     SetTargetFPS(game->target_fps);
   }
+  game->target_fps = game->target_fps < 1 ? 1 : game->target_fps > 60 ? 60: game->target_fps; 
   update_cells_map(game->map);
   delta = 0;
 }
 
 void render_game(Game *game) {
   draw_cells_map(game->map, game->settings);
+  char speed[9] = "Speed: ";
+  sprintf(speed, "%d", game->target_fps);
+  DrawText(speed, 10, 10, 24, GREEN);
 }
 
 void stop_game(Game *game) {
