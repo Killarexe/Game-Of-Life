@@ -8,6 +8,7 @@ typedef struct Game {
   CellsMap* map;
   GameSettings* settings;
   int target_fps;
+  int is_paused;
 } Game;
 
 Game* init_game();

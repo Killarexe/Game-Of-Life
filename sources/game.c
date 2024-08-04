@@ -20,6 +20,7 @@ Game* init_game() {
   fill_with_random_cells(game->map);
 
   game->target_fps = 60;
+  game->is_paused = 0;
 
   InitWindow(settings->window_width, settings->window_height, "Game of Life");
   SetTargetFPS(60);
@@ -28,24 +29,42 @@ Game* init_game() {
 }
 
 void update_game(Game *game, float delta) {
-  if (IsKeyDown(KEY_UP)) {
-    game->target_fps++;
-    SetTargetFPS(game->target_fps);
+  if (game->is_paused == 0) {
+    if (IsKeyDown(KEY_UP)) {
+      game->target_fps++;
+      SetTargetFPS(game->target_fps);
+    }
+    if (IsKeyDown(KEY_DOWN)) {
+      game->target_fps--;
+      SetTargetFPS(game->target_fps);
+    }
+    if (IsKeyPressed(KEY_LEFT_CONTROL)) {
+      game->is_paused = 1;
+    }
+    if (IsKeyDown(KEY_ENTER)) {
+      fill_with_random_cells(game->map);
+    }
+    game->target_fps = game->target_fps < 1 ? 1 : game->target_fps > 60 ? 60: game->target_fps; 
+    update_cells_map(game->map);
+  } else {
+    if (IsKeyPressed(KEY_ENTER)) {
+      update_cells_map(game->map);
+    } else if (IsKeyPressed(KEY_LEFT_CONTROL)) {
+      game->is_paused = 0;
+    }
   }
-  if (IsKeyDown(KEY_DOWN)) {
-    game->target_fps--;
-    SetTargetFPS(game->target_fps);
-  }
-  game->target_fps = game->target_fps < 1 ? 1 : game->target_fps > 60 ? 60: game->target_fps; 
-  update_cells_map(game->map);
   delta = 0;
 }
 
 void render_game(Game *game) {
   draw_cells_map(game->map, game->settings);
-  char speed[9];
-  sprintf(speed, "Speed: %d", game->target_fps);
-  DrawText(speed, 10, 10, 24, GREEN);
+  if (game->is_paused == 0) {
+    char speed[18];
+    sprintf(speed, "Run Mode\nSpeed: %d", game->target_fps);
+    DrawText(speed, 10, 10, 24, GREEN);
+  } else {
+    DrawText("Pause Mode\nPress CTRL to stop pause mode.", 10, 10, 24, RED);
+  }
 }
 
 void stop_game(Game *game) {
